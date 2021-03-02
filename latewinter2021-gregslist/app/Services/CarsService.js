@@ -2,10 +2,10 @@ import { ProxyState } from "../AppState.js";
 import Car from "../Models/Car.js";
 import { api } from "./AxiosService.js";
 
-class CarsService{
+class CarsService {
 
- 
-  constructor(){
+
+  constructor() {
     console.log("cars service");
     this.getCars()
   }
@@ -13,7 +13,7 @@ class CarsService{
   async getCars() {
     try {
       const res = await api.get('cars')
-      // console.log(res.data)
+      console.log(res.data)
       ProxyState.cars = res.data.map(rawCarData => new Car(rawCarData))
     } catch (error) {
       console.error(error)
@@ -27,20 +27,20 @@ class CarsService{
     // } catch (error) {
     //   console.error(error)
     // }
-    
+
     // NOTE again we could just manually add this to our local data
     try {
       const res = await api.post('cars', rawCar)
-      ProxyState.cars = [ ...ProxyState.cars, new Car(res.data)]
+      ProxyState.cars = [...ProxyState.cars, new Car(res.data)]
     } catch (error) {
       console.error(error)
     }
-    
+
 
   }
 
   async bid(id) {
-    let car = ProxyState.cars.find(c=> c.id === id)
+    let car = ProxyState.cars.find(c => c.id === id)
     car.price += 100
     try {
       const res = await api.put('cars/' + id, car)
@@ -48,7 +48,7 @@ class CarsService{
       // NOTE this is another opportunity to go and fetch the data and make sure it is the most up to date with our database
       ProxyState.cars = ProxyState.cars
     } catch (error) {
-      
+
     }
   }
 
